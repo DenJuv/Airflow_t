@@ -1,4 +1,5 @@
-from datetime import datetime
+import pandas as pd
+from datetime import datetime, timedelta
 from airflow.models import DAG
 from airflow.operators.bash import BashOperator
 from airflow.hooks.base_hook import BaseHook
@@ -9,6 +10,8 @@ default_args = {
     "owner": "etl_user",
     "depends_on_past": False,
     "start_date": datetime(2025, 3, 17),
+    "retries": 5,
+    "retry_delay": timedelta(seconds = 5)
 }
 
 dag = DAG('dag2', default_args=default_args, schedule_interval='0 * * * *', catchup=True,
